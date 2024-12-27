@@ -9,9 +9,9 @@ spring:
   # 配置druid数据源——需要根据实际配置进行修改!!!!!!!!!!!!!!!!!!!!
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/db_serverless_user_edu?useUnicode=true&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://pc-bp1see488eb499zp9.mysql.polardb.rds.aliyuncs.com:3306/db_serverless_user_edu?useUnicode=true&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    username: dlxt
+    password: 123456Dlxt
     type: com.alibaba.druid.pool.DruidDataSource
 
     #Spring Boot 默认是不注入这些属性值的，需要自己绑定
