@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pub.synx.mapper.GroupMapper">
+    <!--<select id="getGrouplist" resultType="db.pojo.pub.synx.Group" parameterType="int">-->
+    <select id="getGrouplist" resultType="group" parameterType="int">
+        select g.id,g.name,g.manager_ids,g.description,g.extension,g.creator_id,g.created_time,g.last_update_time,g.last_operator_id from tbl_group g
+        <if test="userId != null">
+            ,tbl_info_and_group u_g
+        </if>
+        <where>
+            <if test="userId != null">
+                g.id = u_g.group_id and u_g.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <!--添加分组列表-->
+    <insert id="addGrouplist" parameterType="java.util.List">
+        insert into tbl_group(`id`,`name`,`description`,`manager_ids`,`extension`,`creator_id`,`created_time`,`last_update_time`,`last_operator_id`)
+        values
+        <foreach collection="list" item="group" separator=",">
+            (#{group.id},#{group.name},#{group.description},#{group.managerIds},#{group.extension},#{group.creatorId},#{group.createdTime},#{group.lastUpdateTime},#{group.lastOperatorId})
+        </foreach>
+    </insert>
+
+    <!--修改分组-->
+    <!--<update id="updateGroup" parameterType="db.pojo.pub.synx.Group">-->
+    <update id="updateGroup" parameterType="group">
+        update tbl_group
+        <set>
+            <if test="group.name != null">
+                name = #{group.name},
+            </if>
+            <if test="group.description != null">
+                description = #{group.description},
+            </if>
+            <if test="group.managerIds != null">
+                manager_ids = #{group.managerIds},
+            </if>
+            <if test="group.extension != null">
+                extension = #{group.extension},
+            </if>
+            <if test="group.creatorId != null">
+                creator_id = #{group.creatorId},
+            </if>
+            <if test="group.createdTime != null">
+                created_time = #{group.createdTime},
+            </if>
+            <if test="group.lastUpdateTime != null">
+                last_update_time = #{group.lastUpdateTime},
+            </if>
+            <if test="group.lastOperatorId != null">
+                last_operator_id = #{group.lastOperatorId}
+            </if>
+        </set>
+        where id = #{group.id}
+    </update>
+
+    <!--<select id="queryGroup" parameterType="db.pojo.pub.synx.Group" resultType="db.pojo.pub.synx.Group">-->
+    <select id="queryGroup" parameterType="group" resultType="group">
+        select * from tbl_group
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="managerIds != null">
+                and manager_ids = #{managerIds}
+            </if>
+            <if test="extension != null">
+                and extension = #{extension}
+            </if>
+            <if test="description != null">
+                and description = #{description}
+            </if>
+            <if test="creatorId != null">
+                and creator_id = #{creatorId}
+            </if>
+            <if test="lastOperatorId != null">
+                and last_operator_id = #{lastOperatorId}
+            </if>
+        </where>
+    </select>
+
+    <!--删除分组-->
+    <delete id="deleteGroup" parameterType="map">
+        <if test="ids != null">
+            delete from tbl_group where id in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+</mapper>

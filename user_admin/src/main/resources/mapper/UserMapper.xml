@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pub.synx.mapper.UserMapper">
+    <!--<select id="getUserlist" resultType="db.pojo.pub.synx.User" parameterType="int">-->
+    <select id="getUserlist" resultType="user" parameterType="int">
+        select u.id,u.name,u.password,u.account,u.status,u.code,u.identity,u.salt,u.description,u.gender,u.mail,u.extension,u.creator_id,u.created_time,u.last_update_time,u.last_operator_id from tbl_info u
+        <if test="groupId != null">
+            ,tbl_info_and_group u_g
+        </if>
+        <where>
+            <if test="groupId != null">
+                u.id = u_g.user_id and u_g.group_id = #{groupId}
+            </if>
+        </where>
+    </select>
+
+
+
+    <!--<select id="queryUser" parameterType="db.pojo.pub.synx.User" resultType="db.pojo.pub.synx.User">-->
+    <select id="queryUser" parameterType="user" resultType="user">
+        select  u.id,u.name,u.password,u.account,u.status,u.code,u.identity,u.salt,u.description,u.gender,u.mail,u.extension,u.creator_id,u.created_time,u.last_update_time,u.last_operator_id from tbl_info u
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="account != null">
+                and account = #{account}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="description != null">
+                and description = #{description}
+            </if>
+            <if test="code != null">
+                and code = #{code}
+            </if>
+            <if test="identity != null">
+                and identity = #{identity}
+            </if>
+            <if test="mail != null">
+                and mail = #{mail}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="creatorId != null">
+                and creator_id = #{creatorId}
+            </if>
+            <if test="createdTime != null">
+                and created_time = #{createdTime}
+            </if>
+            <if test="lastOperatorId != null">
+                and last_operator_id = #{lastOperatorId}
+            </if>
+            <if test="lastUpdateTime != null">
+                and last_update_time = #{lastUpdateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--添加用户列表-->
+    <insert id="addUserlist" parameterType="java.util.List">
+        insert into tbl_info(`id`,`account`,`name`,`password`,`code`,`identity`,`gender`,`description`,`mail`,`salt`,`status`,`extension`,`creator_id`,`created_time`,`last_update_time`,`last_operator_id`)
+        values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.id},#{user.account},#{user.name},#{user.password},#{user.code},#{user.identity},#{user.gender},#{user.description},#{user.mail},#{user.salt},#{user.status},#{user.extension},#{user.creatorId},#{user.createdTime},#{user.lastUpdateTime},#{user.lastOperatorId})
+        </foreach>
+    </insert>
+
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="map">
+        <if test="id != null">
+            delete from tbl_info where id = #{id}
+        </if>
+        <if test="ids != null">
+            delete from tbl_info where id in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+</mapper>
